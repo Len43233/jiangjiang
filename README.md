@@ -23,13 +23,13 @@
     <script>
         let netProfit = 0;
         const lotteryOdds = [
-            { chance: 0.19, reward: 3 },
+            { chance: 0.21, reward: 3 },
             { chance: 0.23, reward: 5 },
-            { chance: 0.2344, reward: 25 },
+            { chance: 0.2144, reward: 25 },
             { chance: 0.20, reward: 20 },
-            { chance: 0.103, reward: 25 },
+            { chance: 0.103, reward: -5 },
             { chance: 0.02, reward: 40 },
-            { chance: 0.02, reward: -25 },
+            { chance: 0.02, reward: -30 },
             { chance: 0.0025, reward: 120 },
             { chance: 0.0001, reward: 300 }
         ];
