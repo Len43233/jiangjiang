@@ -3,79 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>酱酱唱啥好</title>
+    <title>抽奖模拟</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 50px;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-        }
-        h1 {
-            color: #333;
-        }
-        #result {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #ff5722;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #result { font-size: 24px; margin-top: 20px; }
+        button { padding: 10px 20px; font-size: 18px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>抽的到是妈妈是女儿吗</h1>
-        <p>抽啥唱啥</p>
-        <div id="result">🎵 你的歌曲将在这里显示 🎵</div>
-        <button onclick="drawSong()">抽取歌曲</button>
-    </div>
+    <h1>抽奖模拟</h1>
+    <button onclick="drawLottery()">点击抽奖（消耗10单位）</button>
+    <p id="result"></p>
 
     <script>
-        const songs = [
-           "爱神之箭", "心动盲盒", "喜欢你", "搁浅", "江南", "红昭愿", "说爱你", "水星记", "我要你", "桃花诺", 
-           "风筝误", "表白白", "有点甜", "小情歌", "牵丝戏", "七里香", "龙卷风", "说散就散", "星月神话", "时间煮雨", 
-           "还是爱着", "漠河舞厅", "失落沙洲", "夏天的风", "灰色头像", "明天过后", "我们的爱", "我好想你", "烟花易冷", "飞云之下", 
-           "红色高跟鞋", "被驯服的象", "外面的世界", "天堂岛之歌", "山海入梦来", "爱不会绝迹", "爱笑的眼睛", "背对背拥抱", "反方向的钟", "人间不值得", 
-           "至少还有你", "折枝花满衣", "贝加尔湖畔", "爱就一个字", "会开花的云", "人间惊鸿客", "一直很安静", "想你时风起", "寂寞沙洲冷", "慢慢喜欢你", 
-           "如果这就是爱情", "不为谁而作的歌", "杨花落尽子规啼", "白月光与朱砂痣", "这世界那么多人", "多远都要在一起", "山外小楼夜听雨", "漂洋过海来看你", "今天也想见到你", "最熟悉的陌生人", 
-           "给我一首歌的时间", "我的一个道姑朋友", "羞答答的玫瑰静悄悄的开", "叹", "赤伶", "唯一", "尘埃", "断点", "拾忆", "爱你", 
-           "阴天", "海底", "人是_", "东西", "青花", "晴天", "浪费", "她说", "静悄悄", "水中花", 
-           "锦鲤抄", "芙蓉雨", "广寒宫", "胡广生", "日不落", "他不懂", "追光者", "小幸运", "青花瓷", "发如雪", 
-           "惊鸿一面", "爱的供养", "当你老了", "匆匆那年", "左手指月", "霜雪千年", "往后余生", "动物世界", "蝴蝶泉边", "小镇姑娘", 
-           "午夜恰恰", "千里之外", "Letting Go", "我的未来式", "踮起脚尖爱", "亚特兰提斯", "该死的温柔", "Always Online", "不能说的秘密", "蒲公英的约定", 
-           "那女孩对我说", "不分手的恋爱", "化身孤岛的鲸", "乌兰巴托的夜", "若是月亮还没来", "阳光下的星星", "永不失联的爱", "半边山半边海", "阿拉斯加海湾", "只对你有感觉", 
-           "雪落下的声音", "笼", "预谋", "告白气球", "告白", "小半", "偏爱", "天后", "背叛", "传奇", 
-           "不染", "光亮", "放纵L", "演员", "雨爱", "高尚", "屋顶", "当你", "当你孤单你会想起谁", "三国恋", 
-           "月牙湾", "童话镇", "起风了", "半壶纱", "红玫瑰", "庐州月", "伯虎说", "讲真的", "兰亭序", "关键词", 
-           "空空如也", "下单记忆", "绝世舞姬", "同花顺", "如果可以", "外婆的话-不才", "棠梨煎雪", "身骑白马", "探清水河", "Melody", 
-           "认真的雪", "普通朋友", "Lydia", "不得不爱", "开到荼靡", "爱一点", "般配", "虚拟", "红豆", "靠近", 
-           "年轮", "问风", "句号", "咏春", "流沙", "红马", "房间", "稻香", "如愿", "默", 
-           "若梦", "遇见", "雀跃", "指纹", "探窗", "凉凉", "月光", "再见", "不舍", "慢冷", "成全", "暗号", "倒带", "枫", "杏花弦外雨", "被神明写的歌", "来自天堂的魔鬼", "倒数", "透明", "光年之外"
-
+        const lotteryOdds = [
+            { chance: 0.19, reward: 3 },
+            { chance: 0.23, reward: 5 },
+            { chance: 0.2344, reward: 25 },
+            { chance: 0.20, reward: 20 },
+            { chance: 0.103, reward: 25 },
+            { chance: 0.02, reward: 40 },
+            { chance: 0.02, reward: -25 },
+            { chance: 0.0025, reward: 120 },
+            { chance: 0.0001, reward: 300 }
         ];
 
-        function drawSong() {
-            const randomIndex = Math.floor(Math.random() * songs.length);
-            document.getElementById("result").innerText = songs[randomIndex];
+        function drawLottery() {
+            let rand = Math.random();
+            let cumulative = 0;
+            for (let item of lotteryOdds) {
+                cumulative += item.chance;
+                if (rand < cumulative) {
+                    document.getElementById("result").innerText = `你抽中了：${item.reward} 单位`;
+                    return;
+                }
+            }
+            document.getElementById("result").innerText = "未中奖，扣除 10 单位";
         }
     </script>
 </body>
