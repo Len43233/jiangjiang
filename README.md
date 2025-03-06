@@ -8,12 +8,17 @@
         body { text-align: center; font-family: Arial, sans-serif; }
         #result { font-size: 24px; margin-top: 20px; }
         button { padding: 10px 20px; font-size: 18px; }
+        #history { margin-top: 20px; text-align: left; display: inline-block; }
     </style>
 </head>
 <body>
     <h1>抽奖模拟</h1>
     <button onclick="drawLottery()">点击抽奖（消耗10单位）</button>
     <p id="result"></p>
+    <h2>历史记录</h2>
+    <div id="history"></div>
+    <h2>总收益</h2>
+    <p id="totalEarnings">0 单位</p>
 
     <script>
         const lotteryOdds = [
@@ -28,17 +33,29 @@
             { chance: 0.0001, reward: 300 }
         ];
 
+        let totalEarnings = 0;
+        let history = [];
+
         function drawLottery() {
             let rand = Math.random();
             let cumulative = 0;
+            let resultText = "未中奖，扣除 10 单位";
+            let earnings = -10;
+
             for (let item of lotteryOdds) {
                 cumulative += item.chance;
                 if (rand < cumulative) {
-                    document.getElementById("result").innerText = `你抽中了：${item.reward} 单位`;
-                    return;
+                    earnings += item.reward;
+                    resultText = `你抽中了：${item.reward} 单位`;
+                    break;
                 }
             }
-            document.getElementById("result").innerText = "未中奖，扣除 10 单位";
+            
+            totalEarnings += earnings;
+            history.push(resultText + `（净收益：${earnings} 单位）`);
+            document.getElementById("result").innerText = resultText;
+            document.getElementById("totalEarnings").innerText = totalEarnings + " 单位";
+            document.getElementById("history").innerHTML = history.map(h => `<p>${h}</p>`).join('');
         }
     </script>
 </body>
